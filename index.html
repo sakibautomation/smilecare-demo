@@ -1,50 +1,335 @@
-<!doctype HTML>
-<Body>
-<h1>Smile Care Dental Clinic</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smile Care Dental Clinic</title>
+
 <style>
-body { front-family: Arial; text-align:
-center; background-color: #fof8ff; }
-h1 {color: #2c7be5; }
-button { background-color: #2c7be5; color:
-white; padding: 10px 20px; border: none;
-border-radius: 5px; }
-  .services {
-    margin-top: 40px;
-    padding: 20px;
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
 }
 
-.services h2 {
-    color: #2c7be5;
+body{
+background:#f7fbff;
+color:#333;
+line-height:1.6;
 }
 
-.services h3 {
-    margin-top: 20px;
+header{
+background:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+position:sticky;
+top:0;
 }
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#1e88e5;
+}
+
+nav a{
+text-decoration:none;
+margin-left:25px;
+color:#333;
+font-weight:bold;
+}
+
+.hero{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:80px 8%;
+background:linear-gradient(to right,#e3f2fd,#ffffff);
+}
+
+.hero-text{
+width:50%;
+}
+
+.hero-text h1{
+font-size:52px;
+color:#1565c0;
+margin-bottom:20px;
+}
+
+.hero-text p{
+font-size:20px;
+margin-bottom:30px;
+}
+
+.btn{
+background:#1e88e5;
+padding:15px 30px;
+color:white;
+text-decoration:none;
+border-radius:30px;
+font-size:18px;
+}
+
+.hero img{
+width:500px;
+border-radius:20px;
+}
+
+section{
+padding:70px 8%;
+}
+
+.section-title{
+text-align:center;
+font-size:38px;
+color:#1565c0;
+margin-bottom:50px;
+}
+
+.services{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+text-align:center;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card h3{
+margin:15px 0;
+color:#1565c0;
+}
+
+.about{
+display:flex;
+gap:50px;
+align-items:center;
+}
+
+.about img{
+width:350px;
+border-radius:15px;
+}
+
+.about-text h2{
+color:#1565c0;
+margin-bottom:20px;
+}
+
+.testimonials{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+}
+
+.review{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.contact{
+text-align:center;
+background:#1565c0;
+color:white;
+}
+
+.contact h2{
+margin-bottom:20px;
+}
+
+footer{
+background:#0d47a1;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.chat{
+position:fixed;
+bottom:25px;
+right:25px;
+background:#1e88e5;
+color:white;
+width:65px;
+height:65px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+cursor:pointer;
+box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
 </style>
-<h>Your Smile, Our priorty.</h2>
-<button>Book an Appointment</button>
-<img src="https://placehold.co/600x300?text=Smile+Care+Dental+Cinic" alt= "Dental Clinic">
-<h2>Your Smile, Our priority.</h2>
-<button>Book an Appointment</button>
 
-<div class="services">
-  <h2>Our Services</h2>
+</head>
 
-  <h3>🦷 Teeth Cleaning</h3>
-  <p>Professional cleaning for healthy teeth and gums.</p>
+<body>
 
-  <h3>😁 Teeth Whitening</h3>
-  <p>Get a brighter and whiter smile in one visit.</p>
+<header>
 
-  <h3>🦷 Dental Implants</h3>
-  <p>Replace missing teeth with natural-looking implants.</p>
+<div class="logo">🦷 Smile Care</div>
 
-  <h3>😀 Braces & Invisalign</h3>
-  <p>Straighten your teeth comfortably with modern treatments.</p>
+<nav>
+
+<a href="#">Home</a>
+
+<a href="#">Services</a>
+
+<a href="#">About</a>
+
+<a href="#">Contact</a>
+
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-text">
+
+<h1>Your Perfect Smile Starts Here</h1>
+
+<p>Modern dentistry with advanced technology and compassionate care.</p>
+
+<a href="#" class="btn">Book Appointment</a>
+
 </div>
 
-<img src="https://placehold.co/600x300?text=Smile+Care+Dental+Clinic" alt="Dental Clinic">
-<p>Welcome to our Dental clinic</p>
-<p>Welcome to Smile Care Dental Clinic</p>
-</Body>
-</HTML>
+<img src="https://placehold.co/550x400?text=Smile+Care+Dental+Clinic" alt="Dental Clinic">
+
+</section>
+
+<section>
+
+<h2 class="section-title">Our Services</h2>
+
+<div class="services">
+
+<div class="card">
+<h3>🦷 Teeth Cleaning</h3>
+<p>Professional cleaning for healthy teeth and gums.</p>
+</div>
+
+<div class="card">
+<h3>😁 Teeth Whitening</h3>
+<p>Brighten your smile with safe whitening treatment.</p>
+</div>
+
+<div class="card">
+<h3>🦷 Dental Implants</h3>
+<p>Natural-looking permanent tooth replacement.</p>
+</div>
+
+<div class="card">
+<h3>😀 Invisalign</h3>
+<p>Straighten your teeth comfortably.</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="about">
+
+<img src="https://placehold.co/350x350?text=Dr.+Sarah+Johnson">
+
+<div class="about-text">
+
+<h2>Meet Our Dentist</h2>
+
+<p>
+
+Dr. Sarah Johnson has over 15 years of experience helping patients achieve healthy, confident smiles using modern dental techniques.
+
+</p>
+
+</div>
+
+</section>
+
+<section>
+
+<h2 class="section-title">Patient Reviews</h2>
+
+<div class="testimonials">
+
+<div class="review">
+
+⭐⭐⭐⭐⭐
+
+<p>"Amazing staff and painless treatment!"</p>
+
+<b>- Emily</b>
+
+</div>
+
+<div class="review">
+
+⭐⭐⭐⭐⭐
+
+<p>"The best dental clinic I've visited."</p>
+
+<b>- Michael</b>
+
+</div>
+
+<div class="review">
+
+⭐⭐⭐⭐⭐
+
+<p>"Highly recommend for families."</p>
+
+<b>- Jennifer</b>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="contact">
+
+<h2>Ready for a Healthy Smile?</h2>
+
+<p>📞 (555) 123-4567</p>
+
+<p>📧 info@smilecare.com</p>
+
+<p>📍 New York, USA</p>
+
+</section>
+
+<footer>
+
+© 2026 Smile Care Dental Clinic. All Rights Reserved.
+
+</footer>
+
+<div class="chat">
+
+💬
+
+</div>
+
+</body>
+</html>
