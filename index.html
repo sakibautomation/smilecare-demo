@@ -1375,7 +1375,7 @@ function quickMessage(message){
    SEND MESSAGE
 ================================= */
 
-function sendMessage(){
+async function sendMessage(){
 
     const input =
     document.getElementById("chatInput");
@@ -1390,7 +1390,7 @@ function sendMessage(){
         return;
     }
 
-
+    // Show visitor's message
     const userBubble =
     document.createElement("div");
 
@@ -1407,27 +1407,54 @@ function sendMessage(){
     chatBody.scrollTop =
     chatBody.scrollHeight;
 
+    // Show temporary typing message
+    const botBubble =
+    document.createElement("div");
 
-    setTimeout(function(){
+    botBubble.className =
+    "bot-message";
 
-        const botBubble =
-        document.createElement("div");
+    botBubble.textContent =
+    "Typing...";
 
-        botBubble.className =
-        "bot-message";
+    chatBody.appendChild(botBubble);
 
-        botBubble.innerHTML =
-        getDemoReply(message);
+    chatBody.scrollTop =
+    chatBody.scrollHeight;
 
-        chatBody.appendChild(botBubble);
+    try {
 
-        chatBody.scrollTop =
-        chatBody.scrollHeight;
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message
+            })
+        });
 
-    },500);
+        const data = await response.json();
 
+        if (!response.ok) {
+            throw new Error(data.error || "Request failed");
+        }
+
+        botBubble.textContent =
+        data.reply || "Sorry, I couldn't generate a response.";
+
+    } catch (error) {
+
+        console.error(error);
+
+        botBubble.textContent =
+        "Sorry, I'm having trouble connecting right now. Please try again.";
+
+    }
+
+    chatBody.scrollTop =
+    chatBody.scrollHeight;
 }
-
 
 /* =================================
    DEMO RECEPTIONIST RESPONSES
