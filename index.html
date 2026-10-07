@@ -1,187 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Smile Care Dental Clinic</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
-background:#f7fbff;
-color:#333;
-line-height:1.6;
+html {
+    scroll-behavior: smooth;
 }
 
-header{
-background:white;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 8%;
-box-shadow:0 2px 10px rgba(0,0,0,.08);
-position:sticky;
-top:0;
+body {
+    background: #f7fbff;
+    color: #333;
+    line-height: 1.6;
 }
 
-.logo{
-font-size:28px;
-font-weight:bold;
-color:#1e88e5;
+/* HEADER */
+
+header {
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-nav a{
-text-decoration:none;
-margin-left:25px;
-color:#333;
-font-weight:bold;
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1e88e5;
 }
 
-.hero{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:80px 8%;
-background:linear-gradient(to right,#e3f2fd,#ffffff);
+nav a {
+    text-decoration: none;
+    margin-left: 25px;
+    color: #333;
+    font-weight: bold;
 }
 
-.hero-text{
-width:50%;
+nav a:hover {
+    color: #1e88e5;
 }
 
-.hero-text h1{
-font-size:52px;
-color:#1565c0;
-margin-bottom:20px;
+/* HERO */
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 8%;
+    background: linear-gradient(to right,#e3f2fd,#ffffff);
+    min-height: 600px;
 }
 
-.hero-text p{
-font-size:20px;
-margin-bottom:30px;
+.hero-text {
+    width: 50%;
 }
 
-.btn{
-background:#1e88e5;
-padding:15px 30px;
-color:white;
-text-decoration:none;
-border-radius:30px;
-font-size:18px;
+.hero-text h1 {
+    font-size: 52px;
+    color: #1565c0;
+    margin-bottom: 20px;
 }
 
-.hero img{
-width:500px;
-border-radius:20px;
+.hero-text p {
+    font-size: 20px;
+    margin-bottom: 30px;
 }
 
-section{
-padding:70px 8%;
+.btn {
+    display: inline-block;
+    background: #1e88e5;
+    padding: 15px 30px;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 18px;
+    transition: .3s;
 }
 
-.section-title{
-text-align:center;
-font-size:38px;
-color:#1565c0;
-margin-bottom:50px;
+.btn:hover {
+    background: #1565c0;
+    transform: translateY(-2px);
 }
 
-.services{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
+.hero img {
+    width: 500px;
+    max-width: 45%;
+    border-radius: 20px;
 }
 
-.card{
-background:white;
-padding:30px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-text-align:center;
-transition:.3s;
+section {
+    padding: 70px 8%;
 }
 
-.card:hover{
-transform:translateY(-8px);
+.section-title {
+    text-align: center;
+    font-size: 38px;
+    color: #1565c0;
+    margin-bottom: 50px;
 }
 
-.card h3{
-margin:15px 0;
-color:#1565c0;
+/* SERVICES */
+
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap: 25px;
 }
 
-.about{
-display:flex;
-gap:50px;
-align-items:center;
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+    text-align: center;
+    transition: .3s;
 }
 
-.about img{
-width:350px;
-border-radius:15px;
+.card:hover {
+    transform: translateY(-8px);
 }
 
-.about-text h2{
-color:#1565c0;
-margin-bottom:20px;
+.card h3 {
+    margin: 15px 0;
+    color: #1565c0;
 }
 
-.testimonials{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:25px;
+/* ABOUT */
+
+.about {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    background: #eef7ff;
 }
 
-.review{
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
+.about img {
+    width: 350px;
+    max-width: 45%;
+    border-radius: 15px;
 }
 
-.contact{
-text-align:center;
-background:#1565c0;
-color:white;
+.about-text h2 {
+    color: #1565c0;
+    margin-bottom: 20px;
+    font-size: 36px;
 }
 
-.contact h2{
-margin-bottom:20px;
+/* TESTIMONIALS */
+
+.testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 25px;
 }
 
-footer{
-background:#0d47a1;
-color:white;
-text-align:center;
-padding:20px;
+.review {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
 }
 
-.chat{
-position:fixed;
-bottom:25px;
-right:25px;
-background:#1e88e5;
-color:white;
-width:65px;
-height:65px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:30px;
-cursor:pointer;
-box-shadow:0 5px 15px rgba(0,0,0,.3);
+.review p {
+    margin: 15px 0;
+}
+
+/* APPOINTMENT */
+
+.appointment {
+    background: #eef7ff;
+}
+
+.appointment-box {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.appointment-box input,
+.appointment-box select,
+.appointment-box textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.appointment-box textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.appointment-box button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background: #1e88e5;
+    color: white;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.appointment-box button:hover {
+    background: #1565c0;
+}
+
+.success-message {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* CONTACT */
+
+.contact {
+    text-align: center;
+    background: #1565c0;
+    color: white;
+}
+
+.contact h2 {
+    margin-bottom: 20px;
+    font-size: 36px;
+}
+
+/* FOOTER */
+
+footer {
+    background: #0d47a1;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* CHAT BUTTON */
+
+.chat {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #1e88e5;
+    color: white;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,.3);
+    z-index: 2000;
+}
+
+/* CHAT WINDOW */
+
+.chat-window {
+    display: none;
+    position: fixed;
+    bottom: 105px;
+    right: 25px;
+    width: 350px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    overflow: hidden;
+    z-index: 2000;
+}
+
+.chat-header {
+    background: #1565c0;
+    color: white;
+    padding: 18px;
+}
+
+.chat-header h3 {
+    margin-bottom: 3px;
+}
+
+.chat-header p {
+    font-size: 13px;
+}
+
+.chat-body {
+    height: 280px;
+    overflow-y: auto;
+    padding: 15px;
+    background: #f7fbff;
+}
+
+.bot-message {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.user-message {
+    background: #1e88e5;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 10px 0 10px 40px;
+}
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+    flex: 1;
+    border: none;
+    padding: 15px;
+    outline: none;
+}
+
+.chat-input button {
+    border: none;
+    background: #1e88e5;
+    color: white;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    nav a {
+        margin: 0 8px;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text {
+        width: 100%;
+    }
+
+    .hero-text h1 {
+        font-size: 38px;
+    }
+
+    .hero img {
+        max-width: 100%;
+        width: 100%;
+        margin-top: 45px;
+    }
+
+    .about {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about img {
+        max-width: 100%;
+    }
+
+    .chat-window {
+        width: calc(100% - 30px);
+        right: 15px;
+    }
 }
 
 </style>
-
 </head>
+
 
 <body>
 
@@ -190,124 +409,191 @@ box-shadow:0 5px 15px rgba(0,0,0,.3);
 <div class="logo">🦷 Smile Care</div>
 
 <nav>
-
-<a href="#">Home</a>
-
-<a href="#">Services</a>
-
-<a href="#">About</a>
-
-<a href="#">Contact</a>
-
+<a href="#home">Home</a>
+<a href="#services">Services</a>
+<a href="#about">About</a>
+<a href="#appointment">Book</a>
+<a href="#contact">Contact</a>
 </nav>
 
 </header>
 
-<section class="hero">
+
+<!-- HERO -->
+
+<section class="hero" id="home">
 
 <div class="hero-text">
 
 <h1>Your Perfect Smile Starts Here</h1>
 
-<p>Modern dentistry with advanced technology and compassionate care.</p>
+<p>
+Modern dentistry with advanced technology and compassionate care.
+Experience comfortable dental care for the whole family.
+</p>
 
-<a href="#" class="btn">Book Appointment</a>
+<a href="#appointment" class="btn">Book Appointment</a>
 
 </div>
 
-<img src="https://placehold.co/550x400?text=Smile+Care+Dental+Clinic" alt="Dental Clinic">
+<img
+src="https://placehold.co/550x400?text=Smile+Care+Dental+Clinic"
+alt="Smile Care Dental Clinic">
 
 </section>
 
-<section>
 
-<h2 class="section-title">Our Services</h2>
+<!-- SERVICES -->
+
+<section id="services">
+
+<h2 class="section-title">Our Dental Services</h2>
 
 <div class="services">
 
 <div class="card">
 <h3>🦷 Teeth Cleaning</h3>
-<p>Professional cleaning for healthy teeth and gums.</p>
+<p>Professional cleaning to keep your teeth and gums healthy.</p>
 </div>
 
 <div class="card">
 <h3>😁 Teeth Whitening</h3>
-<p>Brighten your smile with safe whitening treatment.</p>
+<p>Safe professional whitening treatments for a brighter smile.</p>
 </div>
 
 <div class="card">
 <h3>🦷 Dental Implants</h3>
-<p>Natural-looking permanent tooth replacement.</p>
+<p>Natural-looking solutions designed to replace missing teeth.</p>
 </div>
 
 <div class="card">
 <h3>😀 Invisalign</h3>
-<p>Straighten your teeth comfortably.</p>
+<p>Modern clear aligners designed to straighten your smile comfortably.</p>
 </div>
 
 </div>
 
 </section>
 
-<section class="about">
 
-<img src="https://placehold.co/350x350?text=Dr.+Sarah+Johnson">
+<!-- ABOUT -->
+
+<section class="about" id="about">
+
+<img
+src="https://placehold.co/350x350?text=Dr.+Sarah+Johnson"
+alt="Dr Sarah Johnson">
 
 <div class="about-text">
 
-<h2>Meet Our Dentist</h2>
+<h2>Meet Dr. Sarah Johnson</h2>
 
 <p>
+Dr. Sarah Johnson has over 15 years of experience helping patients
+achieve healthy and confident smiles.
+</p>
 
-Dr. Sarah Johnson has over 15 years of experience helping patients achieve healthy, confident smiles using modern dental techniques.
+<br>
 
+<p>
+Our practice combines modern dental technology with personalized,
+comfortable care for every patient.
 </p>
 
 </div>
 
 </section>
 
+
+<!-- REVIEWS -->
+
 <section>
 
-<h2 class="section-title">Patient Reviews</h2>
+<h2 class="section-title">What Our Patients Say</h2>
 
 <div class="testimonials">
 
 <div class="review">
-
 ⭐⭐⭐⭐⭐
-
-<p>"Amazing staff and painless treatment!"</p>
-
-<b>- Emily</b>
-
+<p>"Amazing staff and painless treatment. I felt comfortable throughout my visit."</p>
+<b>— Emily R.</b>
 </div>
 
 <div class="review">
-
 ⭐⭐⭐⭐⭐
-
-<p>"The best dental clinic I've visited."</p>
-
-<b>- Michael</b>
-
+<p>"The best dental experience I've had. Professional, friendly and extremely helpful."</p>
+<b>— Michael T.</b>
 </div>
 
 <div class="review">
-
 ⭐⭐⭐⭐⭐
-
-<p>"Highly recommend for families."</p>
-
-<b>- Jennifer</b>
-
+<p>"Highly recommend Smile Care for families. The entire team was wonderful."</p>
+<b>— Jennifer L.</b>
 </div>
 
 </div>
 
 </section>
 
-<section class="contact">
+
+<!-- APPOINTMENT -->
+
+<section class="appointment" id="appointment">
+
+<h2 class="section-title">Book Your Appointment</h2>
+
+<div class="appointment-box">
+
+<form id="appointmentForm">
+
+<input
+type="text"
+id="patientName"
+placeholder="Full Name"
+required>
+
+<input
+type="tel"
+placeholder="Phone Number"
+required>
+
+<input
+type="email"
+placeholder="Email Address"
+required>
+
+<select required>
+<option value="">Select Treatment</option>
+<option>Teeth Cleaning</option>
+<option>Teeth Whitening</option>
+<option>Dental Implants</option>
+<option>Invisalign Consultation</option>
+<option>General Consultation</option>
+</select>
+
+<input type="date" required>
+
+<textarea placeholder="How can we help you?"></textarea>
+
+<button type="submit">
+Request Appointment
+</button>
+
+</form>
+
+<div class="success-message" id="successMessage">
+✓ Thank you! Your appointment request has been received.
+Our team will contact you shortly.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
 
 <h2>Ready for a Healthy Smile?</h2>
 
@@ -319,17 +605,195 @@ Dr. Sarah Johnson has over 15 years of experience helping patients achieve healt
 
 </section>
 
+
 <footer>
 
-© 2026 Smile Care Dental Clinic. All Rights Reserved.
+© 2026 Smile Care Dental Clinic. Demo Website.
 
 </footer>
 
-<div class="chat">
 
+<!-- AI CHAT -->
+
+<div class="chat" onclick="toggleChat()">
 💬
+</div>
+
+
+<div class="chat-window" id="chatWindow">
+
+<div class="chat-header">
+
+<h3>🦷 Smile Care Assistant</h3>
+
+<p>Online • Typically replies instantly</p>
 
 </div>
+
+
+<div class="chat-body" id="chatBody">
+
+<div class="bot-message">
+
+👋 Hi! I'm the Smile Care virtual receptionist.
+
+<br><br>
+
+How can I help you today?
+
+<br><br>
+
+You can ask me about treatments, appointments, clinic hours or dental services.
+
+</div>
+
+</div>
+
+
+<div class="chat-input">
+
+<input
+type="text"
+id="chatInput"
+placeholder="Type your message..."
+onkeypress="handleEnter(event)">
+
+<button onclick="sendMessage()">Send</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* APPOINTMENT FORM */
+
+document.getElementById("appointmentForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    document.getElementById("successMessage").style.display = "block";
+
+    document.getElementById("appointmentForm").reset();
+
+});
+
+
+/* OPEN / CLOSE CHAT */
+
+function toggleChat(){
+
+    const chat = document.getElementById("chatWindow");
+
+    if(chat.style.display === "block"){
+        chat.style.display = "none";
+    }
+    else{
+        chat.style.display = "block";
+    }
+
+}
+
+
+/* SEND CHAT MESSAGE */
+
+function sendMessage(){
+
+    const input = document.getElementById("chatInput");
+    const chatBody = document.getElementById("chatBody");
+
+    const message = input.value.trim();
+
+    if(message === ""){
+        return;
+    }
+
+    const userMessage = document.createElement("div");
+
+    userMessage.className = "user-message";
+    userMessage.innerText = message;
+
+    chatBody.appendChild(userMessage);
+
+    input.value = "";
+
+    setTimeout(function(){
+
+        const botMessage = document.createElement("div");
+
+        botMessage.className = "bot-message";
+
+        const lowerMessage = message.toLowerCase();
+
+        if(lowerMessage.includes("appointment") ||
+           lowerMessage.includes("book")){
+
+            botMessage.innerHTML =
+            "Absolutely! 😊 I can help you book an appointment. " +
+            "Please use our appointment form above, or tell me which dental service you're interested in.";
+
+        }
+
+        else if(lowerMessage.includes("whitening")){
+
+            botMessage.innerHTML =
+            "We offer professional teeth whitening treatments designed to give you a brighter smile. Would you like to schedule a consultation?";
+
+        }
+
+        else if(lowerMessage.includes("implant")){
+
+            botMessage.innerHTML =
+            "Dental implants can be a long-term solution for missing teeth. Our dentist can evaluate your needs during a consultation.";
+
+        }
+
+        else if(lowerMessage.includes("invisalign") ||
+                lowerMessage.includes("braces")){
+
+            botMessage.innerHTML =
+            "We offer Invisalign consultations for patients interested in straightening their teeth. Would you like to request an appointment?";
+
+        }
+
+        else if(lowerMessage.includes("hours") ||
+                lowerMessage.includes("open")){
+
+            botMessage.innerHTML =
+            "Our demo clinic hours are Monday–Friday, 9:00 AM–6:00 PM, and Saturday, 9:00 AM–2:00 PM.";
+
+        }
+
+        else{
+
+            botMessage.innerHTML =
+            "Thanks for your question! 😊 I'm the Smile Care demo receptionist. I can help with appointments, teeth cleaning, whitening, implants, Invisalign and clinic hours.";
+
+        }
+
+        chatBody.appendChild(botMessage);
+
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+    },700);
+
+}
+
+
+/* ENTER KEY SENDS MESSAGE */
+
+function handleEnter(event){
+
+    if(event.key === "Enter"){
+        sendMessage();
+    }
+
+}
+
+</script>
+
 
 </body>
 </html>
