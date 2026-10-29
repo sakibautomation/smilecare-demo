@@ -122,6 +122,8 @@
   const $=(id)=>document.getElementById(id);
   const body=$('chatBody'),input=$('chatInput');
   const apiURL = '/api/chat';
+  // Show sanitized diagnostic categories only when the owner opens ?debug=1.
+  const debugMode = new URLSearchParams(window.location.search).get('debug') === '1';
   let aiReady = false, aiBusy = false, chatHistory = [], conversationVersion = 0;
   const dataWarningEn = 'Please do not share names, phone numbers, emails, IDs or private medical records in this demo.';
   const dataWarningAr = 'يرجى عدم مشاركة الأسماء أو أرقام الهواتف أو البريد الإلكتروني أو أرقام الهوية أو السجلات الطبية الخاصة في هذا العرض.';
@@ -169,7 +171,10 @@
         });
       } finally { clearTimeout(timeout); }
       const data = await response.json();
-      if (!response.ok || typeof data.reply!=='string' || !data.reply.trim()) throw new Error('API unavailable');
+      if (!response.ok || typeof data.reply!=='string' || !data.reply.trim()) {
+        const safeCodes = ['invalid_key','insufficient_quota','rate_limited','model_unavailable','invalid_request','access_denied','empty_response','timeout','network_error','provider_error'];
+        throw new Error(safeCodes.includes(data?.code) ? data.code : 'api_unavailable');
+      }
       if (version!==conversationVersion) return;
       chatHistory.push({role:'user',content:q},{role:'assistant',content:data.reply});
       chatHistory = chatHistory.slice(-8);
@@ -177,7 +182,9 @@
     } catch (_e) {
       if (version!==conversationVersion) return;
       waiting.remove();
-      say(lang==='ar' ? 'تعذر الاتصال بالذكاء الاصطناعي حالياً. يمكنك استخدام قائمة الخدمات والحجز التجريبي أو التواصل مع المركز مباشرة.' : 'The AI connection is temporarily unavailable. You can still use the demo service and appointment menus, or contact the clinic directly.');
+      let fallback = lang==='ar' ? 'تعذر الاتصال بالذكاء الاصطناعي حالياً. يمكنك استخدام قائمة الخدمات والحجز التجريبي أو التواصل مع المركز مباشرة.' : 'The AI connection is temporarily unavailable. You can still use the demo service and appointment menus, or contact the clinic directly.';
+      if (debugMode) fallback += '\nDiagnostic category: ' + (_e?.message || 'unknown');
+      say(fallback);
       homeChoices();
     } finally { aiBusy=false; sendButton.disabled=false; }
   }
