@@ -57,11 +57,34 @@ export default async function handler(req,res) {
         input,max_output_tokens:350,store:false
       })
     });
-    if(!response.ok)return res.status(503).json({error:'AI service unavailable. Check API billing and credentials.'});
+    if(!response.ok){
+      // Only return safe, standardized diagnostics. Never expose the provider's
+      // raw error message, our secret key, or the visitor's input.
+      let upstream = {};
+      try { upstream = await response.json(); } catch (_) {}
+      const providerCode = String(upstream?.error?.code || '').toLowerCase();
+      const providerType = String(upstream?.error?.type || '').toLowerCase();
+      let code = 'provider_error';
+      if(response.status === 401 || providerCode === 'invalid_api_key') code = 'invalid_key';
+      else if(providerCode === 'insufficient_quota' || providerCode === 'billing_hard_limit_reached') code = 'insufficient_quota';
+      else if(response.status === 429) code = 'rate_limited';
+      else if(providerCode === 'model_not_found' || providerCode === 'model_not_available' || response.status === 404) code = 'model_unavailable';
+      else if(response.status === 400 || providerType === 'invalid_request_error') code = 'invalid_request';
+      else if(response.status === 403) code = 'access_denied';
+      console.error('Gewan demo: OpenAI request failed', {upstream_status:response.status,category:code});
+      return res.status(503).json({error:'AI service unavailable',code});
+    }
     const data=await response.json();
     const reply=extractText(data);
-    if(!reply)return res.status(503).json({error:'AI did not return a reply'});
+    if(!reply) {
+      console.error('Gewan demo: no output text', {status:data?.status || 'unknown',incomplete_reason:data?.incomplete_details?.reason || 'none'});
+      return res.status(503).json({error:'AI returned no text',code:'empty_response'});
+    }
     return res.status(200).json({reply});
-  } catch(_error){return res.status(503).json({error:'AI connection unavailable'});}
+  } catch(_error){
+    const code = _error?.name === 'AbortError' ? 'timeout' : 'network_error';
+    console.error('Gewan demo: OpenAI network failure', {category:code});
+    return res.status(503).json({error:'AI connection unavailable',code});
+  }
   finally {clearTimeout(timeout);}
 }
