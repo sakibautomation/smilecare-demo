@@ -208,6 +208,17 @@
     if(/(price|cost|fee|discount|offer|how much|سعر|أسعار|تكلفة|خصم|عرض)/i.test(text)){say(t.price);choices([t.choices[0],t.choices[3]],[beginBooking,showHuman]);return;}
     if(/(hours|open|close|location|address|where|map|وقت|دوام|ساعات|موقع|عنوان|وين|أين)/i.test(text)){showHours();return;}
     if(/(human|person|staff|reception|whatsapp|phone|call|contact|موظف|الاستقبال|بشري|واتساب|هاتف|اتصال)/i.test(text)){showHuman();return;}
+    const asksForBooking = /(book|appointment|reservation|schedule|visit|موعد|حجز|زيارة)/i.test(text);
+    const relevantService = Object.entries(serviceMap).find(([k])=>text.includes(k))?.[1];
+    // For combined questions in guided mode, answer BOTH parts rather than
+    // ending with only the service description.
+    if(!flow && asksForBooking && relevantService){
+      say(t.serviceDesc[relevantService] + '\n\n' + (lang==='ar' ?
+        'للحجز الفعلي تواصل مع المركز عبر قنواته الرسمية. يمكنك تجربة طلب موعد توضيحي هنا دون إرسال بيانات.' :
+        'To arrange a real appointment, contact Gewan through its official channels. You can also try a sample request here; nothing is sent.'));
+      choices([t.next[0],t.next[2]],[()=>beginBooking(relevantService),showHuman]);
+      return;
+    }
     for(const [k,s] of Object.entries(serviceMap)){if(text.includes(k)){if(flow==='service')selectService(s);else showService(s);return;}}
     if(/(book|appointment|reservation|schedule|visit|موعد|حجز|زيارة)/i.test(text)){beginBooking();return;}
     if(/(service|treatment|specialit|clinic|خدمة|خدمات|علاج|تخصص)/i.test(text)){showServices();return;}
@@ -217,9 +228,14 @@
     e.preventDefault();const q=input.value.trim();if(!q || aiBusy)return;
     input.value='';say(q,'user');
     if (privateDataDetected(q)) {say(lang==='ar'?dataWarningAr:dataWarningEn);return;}
-    if (flow || /\b(book|appointment|reservation|schedule)\b|حجز|موعد/i.test(q)) { handleFreeText(q); return; }
-    if (/(emergency|can't breathe|cannot breathe|chest pain|unconscious|severe bleeding|طوارئ|اختناق|ألم الصدر|نزيف شديد)/i.test(q)) {handleFreeText(q);return;}
-    if (aiReady) {askAI(q);return;}
+    // Continue guided appointment steps when explicitly chosen.
+    if (flow) { handleFreeText(q); return; }
+    // Always handle urgent symptoms locally, without waiting on an AI service.
+    if (/(emergency|can't breathe|cannot breathe|chest pain|unconscious|severe bleeding|طوارئ|اختناق|ألم الصدر|نزيف شديد)/i.test(q)) { handleFreeText(q); return; }
+    // When AI is active, let it answer full natural-language requests, including
+    // compound questions about treatments AND how to make an appointment.
+    if (aiReady) { askAI(q); return; }
+    // Clear scripted fallback when the Vercel AI route is not available.
     handleFreeText(q);
   });
   $('langEN').addEventListener('click',()=>resetChat('en'));
