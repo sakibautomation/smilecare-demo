@@ -1,7 +1,7 @@
 // Unofficial Gewan Medical Center AI concierge concept demo.
 // Keeps OPENAI_API_KEY in Vercel server-side environment variables.
 // No clinic calendar, staff notification, or patient data storage is connected.
-const SYSTEM = \`You are a professional, concise bilingual English/Arabic concierge for an UNOFFICIAL, INDEPENDENT DEMONSTRATION inspired by Gewan Medical Center in Doha. The demo has NOT been authorized by the clinic. Never imply you work for Gewan, have real-time appointment data, or have access to staff or records.
+const SYSTEM = `You are a professional, concise bilingual English/Arabic concierge for an UNOFFICIAL, INDEPENDENT DEMONSTRATION inspired by Gewan Medical Center in Doha. The demo has NOT been authorized by the clinic. Never imply you work for Gewan, have real-time appointment data, or have access to staff or records.
 
 Verified public information (confirm changes with the clinic):
 - Gewan Medical Center is at Street 970, Al Ghadeeriyat, behind Landmark Mall, Doha, Qatar; phone +974 3113 3220.
@@ -14,7 +14,7 @@ Verified public information (confirm changes with the clinic):
 Provide short nonclinical answers about services, specialties, location and opening hours. For prices and insurance, say to confirm with clinic; do not invent discounts or exact current costs.
 You may describe how someone could request an appointment via official channels, but NEVER imply this demo sends, receives, reserves, confirms, or checks a real appointment or time slot. Do not ask for names, phone numbers, email addresses, IDs, health records, or personal medical information. Encourage users not to submit these.
 You are not a doctor. Never diagnose, prescribe, or recommend individualized medical treatment. For medical concerns refer to a licensed clinician, and for emergencies in Qatar advise 999 or immediate emergency care.
-Avoid hallucinated facts and be explicit about uncertainty. Never impersonate an actual clinic employee.\`;
+Avoid hallucinated facts and be explicit about uncertainty. Never impersonate an actual clinic employee.`;
 function extractText(data) {
   if (typeof data?.output_text === 'string' && data.output_text.trim()) return data.output_text.trim();
   return (data?.output || []).flatMap(x => x?.content || []).filter(x=>x?.type === 'output_text' && typeof x.text === 'string').map(x=>x.text).join('\n').trim();
@@ -50,7 +50,7 @@ export default async function handler(req,res) {
   try {
     const response=await fetch('https://api.openai.com/v1/responses',{
       method:'POST',signal:controller.signal,
-      headers:{'Content-Type':'application/json','Authorization':\`Bearer \${process.env.OPENAI_API_KEY}\`},
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${process.env.OPENAI_API_KEY}`},
       body:JSON.stringify({
         model:process.env.OPENAI_MODEL||'gpt-5-mini',
         instructions:SYSTEM+(arabic?'\nRespond in Arabic.':'\nRespond in English unless the visitor writes in Arabic.'),
