@@ -23,13 +23,52 @@
     @media(max-width:950px){.hero-grid{grid-template-columns:1fr;gap:15px}.hero{padding:35px 0 65px}.hero-art{min-height:510px}.hero h1{max-width:680px}.hero .lead{max-width:670px}.assistant-card{transform:none}.halo{inset:0 10%}.service-grid{grid-template-columns:repeat(2,1fr)}.navlinks{gap:14px}}
     @media(max-width:630px){.wrap{padding:0 19px}.topnotice{font-size:11px;line-height:1.45}.nav{height:73px}.logo-symbol{width:39px;height:39px}.logo-text strong{font-size:17px}.navlinks a:not(.nav-cta){display:none}.nav-cta{font-size:11px;padding:10px 12px}.hero h1{font-size:45px}.lead{font-size:15px}.hero-art{min-height:490px}.halo{inset:12px -25px}.ring,.decoration,.float-mini{display:none}.chat-body{height:350px}.ribbon-items{grid-template-columns:1fr;gap:17px}.ribbon{padding:25px 0}.section{padding:65px 0}.service-grid{grid-template-columns:1fr 1fr;gap:10px}.service{padding:19px 15px}.service h3{font-size:14px}.service p{font-size:12px}.demo-banner{display:block;padding:25px}.demo-banner strong{font-size:23px}.demo-banner button{margin-top:17px}.steps{grid-template-columns:1fr}.bottom-inner{display:block}.bottom-meta{text-align:left;margin-top:25px}.copyright{display:block;line-height:1.8}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chat-body{scroll-behavior:auto}}
+
+    /* Compact, accessible chat launcher at the bottom right */
+    .nav-cta{border:0;font:inherit;cursor:pointer}
+    .showcase-card{position:relative;z-index:2;width:min(438px,100%);background:linear-gradient(155deg,#fff,#f4faf5 83%);box-shadow:var(--shadow);border:1px solid #dce9df;border-radius:26px;padding:43px 38px 36px;transform:rotate(-1deg)}
+    .showcase-mark{display:flex;gap:12px;align-items:center;font-size:29px;color:var(--sea);margin-bottom:24px}.showcase-mark span{font-size:10px;color:#63837b;font-weight:800;letter-spacing:.16em}
+    .showcase-card h2{font:500 clamp(32px,3.3vw,44px)/1.13 Georgia,serif;letter-spacing:-.035em;margin:0 0 20px}.showcase-card h2 em{color:var(--sea);font-weight:400}
+    .showcase-card p{color:#5f7776;font-size:13.5px;line-height:1.8}
+    .showcase-points{display:flex;gap:8px;flex-wrap:wrap;margin:25px 0}.showcase-points span{background:#eaf5ee;color:var(--forest);font-size:11px;padding:8px 11px;border-radius:15px;font-weight:700}
+    .showcase-action{display:inline-flex;align-items:center;gap:14px;background:var(--forest);color:#fff;padding:13px 19px;border:0;border-radius:30px;font-size:13px;font-weight:800}
+    .showcase-action:hover{background:#0b3739}
+    .chat-launcher{position:fixed;right:24px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:1001;display:flex;align-items:center;gap:11px;min-height:63px;max-width:calc(100vw - 24px);padding:9px 16px 9px 10px;border:1px solid #287368;background:linear-gradient(120deg,#104b49,#12685e);color:#fff;border-radius:50px;box-shadow:0 14px 32px rgba(16,75,73,.25);text-align:left}
+    .chat-launcher:hover{background:#0c3e3c;box-shadow:0 17px 35px rgba(16,75,73,.32)}
+    .launcher-icon{display:grid;place-items:center;background:#ffffff25;border:1px solid #ffffff30;border-radius:50%;width:43px;height:43px;font:28px Georgia,serif;flex:none}
+    .launcher-copy strong,.launcher-copy small{display:block}.launcher-copy strong{font-size:13px;line-height:1.3}.launcher-copy small{font-size:11px;color:#cde5d9;margin-top:2px}.launcher-symbol{margin-left:8px;font-size:19px;color:#d7ece1}
+    .concierge-widget{position:fixed;bottom:calc(98px + env(safe-area-inset-bottom,0px));right:24px;width:min(410px,calc(100vw - 32px));height:min(590px,calc(100vh - 119px));height:min(590px,calc(100dvh - 119px));z-index:1000;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(12px) scale(.98);transform-origin:bottom right;transition:opacity .18s ease,transform .18s ease,visibility .18s}
+    .concierge-widget.open{visibility:visible;opacity:1;pointer-events:auto;transform:none}
+    .concierge-widget .assistant-card{height:100%;max-width:none;width:100%;display:flex;flex-direction:column;transform:none;border-radius:20px;box-shadow:0 20px 65px #142f3660}
+    .concierge-widget .chat-top{flex-shrink:0;padding:14px 15px;gap:8px}
+    .concierge-widget .chat-title strong{font-size:13px}.concierge-widget .chat-title small{font-size:10px}
+    .concierge-widget .bot-avatar{height:38px;width:38px;font-size:21px;border-radius:12px}
+    .concierge-widget .language{gap:1px;padding:3px}.concierge-widget .lang-btn{padding:4px 5px}
+    .chat-close{display:grid;place-items:center;flex:none;height:30px;width:30px;border:0;background:#ffffff24;color:#fff;border-radius:50%}
+    .chat-close:hover{background:#ffffff45}
+    .concierge-widget .chat-body{flex:1;height:auto;min-height:0;overscroll-behavior:contain;padding:14px}
+    .concierge-widget .composer{flex-shrink:0;padding:10px}
+    .concierge-widget .chat-foot{flex-shrink:0;font-size:9.5px;line-height:1.4;padding:7px 10px}
+    @media(max-width:630px){
+      .showcase-card{transform:none;padding:31px 23px}.hero-art{min-height:385px}
+      .chat-launcher{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));min-height:56px;padding:7px 13px 7px 7px}
+      .launcher-icon{width:39px;height:39px}.launcher-copy strong{font-size:12px}
+      .concierge-widget{right:10px;width:calc(100vw - 20px);bottom:calc(80px + env(safe-area-inset-bottom,0px));height:min(570px,calc(100vh - 96px));height:min(570px,calc(100dvh - 96px))}
+      body.chat-open{overflow:hidden}
+    }
+    @media(max-width:360px){
+      .concierge-widget .chat-top{padding:12px 9px;gap:5px}
+      .concierge-widget .chat-title strong{font-size:12px}.concierge-widget .lang-btn{font-size:10px;padding:4px}
+      .concierge-widget .bot-avatar{height:32px;width:32px}.chat-close{height:27px;width:27px}
+    }
+    @media(prefers-reduced-motion:reduce){.concierge-widget{transition:none}}
   </style>
 </head>
 <body>
   <div class="topnotice"><strong>INDEPENDENT CONCEPT DEMO</strong> — Not an official Gewan Medical Center website or live booking system. Do not enter names, contact details, IDs or personal medical information. AI-powered responses require a configured backend.</div>
   <header class="wrap nav">
     <a class="logo" href="#top" aria-label="Gewan AI concept demo home"><span class="logo-symbol">G</span><span class="logo-text"><strong>GEWAN</strong><small>MEDICAL CENTER · CONCEPT</small></span></a>
-    <nav class="navlinks" aria-label="Page navigation"><a href="#services">Services</a><a href="#doctors">Doctors</a><a href="#how">How it works</a><a href="https://gewanmedicalcenter.com/index-en.html" target="_blank" rel="noopener noreferrer">Official clinic ↗</a><a class="nav-cta" href="#try-demo">Try the demo</a></nav>
+    <nav class="navlinks" aria-label="Page navigation"><a href="#services">Services</a><a href="#doctors">Doctors</a><a href="#how">How it works</a><a href="https://gewanmedicalcenter.com/index-en.html" target="_blank" rel="noopener noreferrer">Official clinic ↗</a><a class="nav-cta" type="button" id="openChatNav">Try the demo</button></nav>
   </header>
   <main id="top">
     <section class="hero">
@@ -38,18 +77,19 @@
           <span class="eyebrow">Future of patient experience</span>
           <h1>Care begins with a <em>conversation.</em></h1>
           <p class="lead">A beautiful, bilingual digital front desk concept for Gewan Medical Center. Explore how an AI-powered assistant could answer patient questions, guide service discovery and prepare appointment requests — in English or Arabic.</p>
-          <div class="hero-actions"><a href="#try-demo" class="btn primary">Experience the assistant <span aria-hidden="true">↗</span></a><a href="#how" class="btn ghost">Explore the concept</a></div>
+          <div class="hero-actions"><button type="button" class="btn primary" id="openChatHero">Experience the assistant <span aria-hidden="true">↗</span></button><a href="#how" class="btn ghost">Explore the concept</a></div>
           <div class="marks"><span><b>✓</b> Arabic + English</span><span><b>✓</b> Dentistry + Dermatology</span><span><b>✓</b> Human handoff</span></div>
         </div>
         <div class="hero-art" id="try-demo">
           <div class="halo" aria-hidden="true"></div><div class="ring" aria-hidden="true"></div>
           <div class="decoration" aria-hidden="true">Concept experience <strong>Always ready to assist</strong></div>
           <div class="float-mini" aria-hidden="true">Designed for real clinic workflows <b>Patient-first conversations</b></div>
-          <div class="assistant-card" role="region" aria-label="Interactive patient assistant demonstration">
-            <div class="chat-top"><div class="bot-avatar" aria-hidden="true">✳</div><div class="chat-title"><strong id="assistantTitle">Gewan Virtual Concierge</strong><small><span class="online"></span><span id="assistantSubtitle">Interactive concept · not live</span></small></div><div class="language" aria-label="Language selector"><button type="button" class="lang-btn active" id="langEN" aria-pressed="true">EN</button><button type="button" class="lang-btn" id="langAR" aria-pressed="false">عربي</button></div></div>
-            <div class="chat-body" id="chatBody" aria-live="polite" aria-relevant="additions" aria-label="Demo chat"></div>
-            <form class="composer" id="chatForm" autocomplete="off"><input id="chatInput" type="text" maxlength="240" aria-label="Ask the patient assistant" placeholder="Ask about services or appointments..." required><button class="send" type="submit" aria-label="Send message"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M22 2 11 13"/></svg></button></form>
-            <div class="chat-foot" id="chatFoot">Scripted demonstration · No booking is sent · No chat data is stored</div>
+          <div class="showcase-card" aria-label="AI concierge feature overview">
+            <div class="showcase-mark">✳ <span>GEWAN CONCIERGE · CONCEPT</span></div>
+            <h2>Helpful answers.<br><em>A warmer welcome.</em></h2>
+            <p>Patients can explore dentistry, dermatology and aesthetic services, ask questions in English or Arabic, and try a sample appointment request.</p>
+            <div class="showcase-points"><span>✦ Bilingual support</span><span>✦ Guided appointments</span><span>✦ Human handoff</span></div>
+            <button class="showcase-action" type="button" id="openChatShowcase">Try the chat demo <span aria-hidden="true">↗</span></button>
           </div>
         </div>
       </div>
@@ -60,6 +100,21 @@
     <section class="section steps-area" id="how"><div class="wrap"><div class="section-head"><span class="kicker">Designed for staff and patients</span><h2>From enquiry to human care.</h2><p>A concept workflow that could be connected to a real clinic booking system after approval and secure integration.</p></div><div class="steps"><div class="step"><span class="num">1</span><h3>Understand the question</h3><p>The visitor selects a topic or asks about clinic services in English or Arabic.</p></div><div class="step"><span class="num">2</span><h3>Collect a visit preference</h3><p>The demo helps select a service, doctor, date and preferred time window without inventing available slots.</p></div><div class="step"><span class="num">3</span><h3>Hand off safely</h3><p>The receptionist would confirm availability using an authorized clinic system. Until then, visitors are directed to official channels.</p></div></div><p class="compliance">When the Vercel OpenAI backend is available, free-text questions receive AI-generated answers. Guided service and sample appointment flows remain available offline. This independent demo is not connected to clinic records, calendars or staff; a production assistant requires clinic authorization, privacy safeguards and human review.</p></div></section>
   </main>
   <footer class="bottom"><div class="wrap"><div class="bottom-inner"><div><span class="kicker" style="color:#d2bd95">A tailored sales prototype</span><h2>Better conversations.<br>Thoughtful patient journeys.</h2><p>This unofficial concept is prepared to demonstrate potential workflow improvements. It is not operated by, endorsed by, or connected to Gewan Medical Center.</p><a href="#try-demo" class="btn">Explore the demo ↗</a></div><div class="bottom-meta"><strong>Official clinic information</strong><br>Street 970, Al Ghadeeriyat, behind Landmark Mall, Doha<br><a href="tel:+97431133220">+974 3113 3220</a><br><a href="https://gewanmedicalcenter.com/index-en.html" target="_blank" rel="noopener noreferrer">Official clinic website ↗</a><br><a href="https://mawaeidk.com/en/clinics/gewan-medical-center" target="_blank" rel="noopener noreferrer">Public booking listing ↗</a></div></div><div class="copyright"><span>© Concept presentation · Independent demonstration</span><span>Not medical advice · No real-time availability · Avoid sharing private medical information</span></div></div></footer>
+<!-- Persistent chat launcher: initially closed and never blocks page content -->
+  <div class="concierge-widget" id="conciergeWidget" aria-hidden="true">
+          <div class="assistant-card" role="dialog" aria-modal="false" aria-label="Gewan virtual concierge interactive demo">
+            <div class="chat-top"><div class="bot-avatar" aria-hidden="true">✳</div><div class="chat-title"><strong id="assistantTitle">Gewan Virtual Concierge</strong><small><span class="online"></span><span id="assistantSubtitle">Interactive concept · not live</span></small></div><div class="language" aria-label="Language selector"><button type="button" class="lang-btn active" id="langEN" aria-pressed="true">EN</button><button type="button" class="lang-btn" id="langAR" aria-pressed="false">عربي</button></div><button type="button" class="chat-close" id="closeChat" aria-label="Close chat" title="Close chat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+            <div class="chat-body" id="chatBody" aria-live="polite" aria-relevant="additions" aria-label="Demo chat"></div>
+            <form class="composer" id="chatForm" autocomplete="off"><input id="chatInput" type="text" maxlength="240" aria-label="Ask the patient assistant" placeholder="Ask about services or appointments..." required><button class="send" type="submit" aria-label="Send message"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M22 2 11 13"/></svg></button></form>
+            <div class="chat-foot" id="chatFoot">Scripted demonstration · No booking is sent · No chat data is stored</div>
+          </div>
+  </div>
+  <button type="button" class="chat-launcher" id="chatLauncher" aria-controls="conciergeWidget" aria-expanded="false" aria-label="Open the Gewan chatbot demo">
+    <span class="launcher-icon" aria-hidden="true">✳</span>
+    <span class="launcher-copy"><strong>Chat with Gewan demo</strong><small>English · عربي</small></span>
+    <span class="launcher-symbol" aria-hidden="true">↗</span>
+  </button>
+
 <!-- OpenAI key remains in Vercel; frontend uses same-origin /api/chat. -->
 <script>
 (function(){
@@ -169,7 +224,24 @@
   });
   $('langEN').addEventListener('click',()=>resetChat('en'));
   $('langAR').addEventListener('click',()=>resetChat('ar'));
-  $('startBooking').addEventListener('click',()=>{document.getElementById('try-demo').scrollIntoView({behavior:'smooth',block:'center'});beginBooking();});
+  $('startBooking').addEventListener('click',()=>{setChatOpen(true);beginBooking();});
+
+  const widget=$('conciergeWidget'),launcher=$('chatLauncher');
+  function setChatOpen(open,focusInput=true){
+    widget.classList.toggle('open',open);
+    widget.setAttribute('aria-hidden',String(!open));
+    launcher.setAttribute('aria-expanded',String(open));
+    launcher.setAttribute('aria-label',open?'Close the Gewan chatbot demo':'Open the Gewan chatbot demo');
+    document.body.classList.toggle('chat-open',open);
+    if(open && focusInput) requestAnimationFrame(()=>input.focus({preventScroll:true}));
+    else if(!open && focusInput) launcher.focus({preventScroll:true});
+  }
+  launcher.addEventListener('click',()=>setChatOpen(!widget.classList.contains('open')));
+  $('closeChat').addEventListener('click',()=>setChatOpen(false));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&widget.classList.contains('open'))setChatOpen(false);});
+  for(const id of ['openChatNav','openChatHero','openChatShowcase']){
+    $(id).addEventListener('click',()=>setChatOpen(true));
+  }
   resetChat('en');
   checkConnection();
 })();
