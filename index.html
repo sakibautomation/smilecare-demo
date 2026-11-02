@@ -251,9 +251,48 @@
 
   const widget=$('conciergeWidget'),launcher=$('chatLauncher');
   let autoOpenDismissed=false;
+  let chimeContext=null;
+  function unlockChime(){
+    try{
+      const AudioContextCtor=window.AudioContext||window.webkitAudioContext;
+      if(!AudioContextCtor) return;
+      if(!chimeContext) chimeContext=new AudioContextCtor();
+      if(chimeContext.state==='suspended') chimeContext.resume().catch(()=>{});
+    }catch(_error){ /* Audio may be disabled or blocked by the browser. */ }
+  }
+  // Browsers may block autoplay audio without an earlier user gesture.
+  // If a visitor interacts with the page first, the delayed chime can play.
+  document.addEventListener('pointerdown',unlockChime,{once:true,passive:true});
+  document.addEventListener('keydown',unlockChime,{once:true});
+  function playOpenChime(){
+    try{
+      const AudioContextCtor=window.AudioContext||window.webkitAudioContext;
+      if(!AudioContextCtor) return;
+      const ctx=chimeContext||(chimeContext=new AudioContextCtor());
+      const beep=()=>{
+        if(ctx.state!=='running'||!widget.classList.contains('open')) return;
+        const now=ctx.currentTime;
+        const oscillator=ctx.createOscillator();
+        const volume=ctx.createGain();
+        oscillator.type='sine';
+        oscillator.frequency.setValueAtTime(740,now);
+        volume.gain.setValueAtTime(0.0001,now);
+        volume.gain.exponentialRampToValueAtTime(0.035,now+0.015);
+        volume.gain.exponentialRampToValueAtTime(0.0001,now+0.18);
+        oscillator.connect(volume);
+        volume.connect(ctx.destination);
+        oscillator.start(now);
+        oscillator.stop(now+0.2);
+      };
+      if(ctx.state==='running') beep();
+      else ctx.resume().then(beep).catch(()=>{});
+    }catch(_error){ /* Opening the assistant never depends on audio. */ }
+  }
   function setChatOpen(open,focusInput=true){
     if(!open) autoOpenDismissed=true;
+    const wasOpen=widget.classList.contains('open');
     widget.classList.toggle('open',open);
+    if(open&&!wasOpen) playOpenChime();
     widget.setAttribute('aria-hidden',String(!open));
     launcher.setAttribute('aria-expanded',String(open));
     launcher.setAttribute('aria-label',open?'Close the Gewan chatbot demo':'Open the Gewan chatbot demo');
