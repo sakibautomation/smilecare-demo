@@ -125,6 +125,26 @@
   const $=(id)=>document.getElementById(id);
   const body=$('chatBody'),input=$('chatInput');
   const apiURL = '/api/chat';
+  // Add the public GA4 Measurement ID (G-...) to activate free analytics.
+  // No user message text, appointment details or identifying information is sent as an event.
+  const GA4_MEASUREMENT_ID = '';
+  if (/^G-[A-Z0-9]+$/.test(GA4_MEASUREMENT_ID)) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA4_MEASUREMENT_ID, {
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      page_location: location.origin + location.pathname
+    });
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA4_MEASUREMENT_ID);
+    document.head.appendChild(tag);
+  }
+  function trackDemoEvent(name, properties) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, properties || {});
+  }
   // Show sanitized diagnostic categories only when the owner opens ?debug=1.
   const debugMode = new URLSearchParams(window.location.search).get('debug') === '1';
   let aiReady = false, aiBusy = false, chatHistory = [], conversationVersion = 0;
@@ -182,9 +202,11 @@
       chatHistory.push({role:'user',content:q},{role:'assistant',content:data.reply});
       chatHistory = chatHistory.slice(-8);
       waiting.remove(); say(data.reply);
+      trackDemoEvent('ai_reply_success');
     } catch (_e) {
       if (version!==conversationVersion) return;
       waiting.remove();
+      trackDemoEvent('ai_reply_failed');
       let fallback = lang==='ar' ? 'تعذر الاتصال بالذكاء الاصطناعي حالياً. يمكنك استخدام قائمة الخدمات والحجز التجريبي أو التواصل مع المركز مباشرة.' : 'The AI connection is temporarily unavailable. You can still use the demo service and appointment menus, or contact the clinic directly.';
       if (debugMode) fallback += '\nDiagnostic category: ' + (_e?.message || 'unknown');
       say(fallback);
@@ -213,7 +235,7 @@
   function selectService(s){booking.service=s;flow='doctor';const t=ui[lang];say(t.chooseDoctor);const dn=names[s]||[];const options=[...dn.map(n=>n[lang==='en'?0:1]),t.doctorAny];choices(options,options.map((o,i)=>()=>selectDoctor(i===options.length-1?t.doctorAny:o)));}
   function selectDoctor(doctor){booking.doctor=doctor;flow='date';say(ui[lang].chooseDate);const row=document.createElement('div');row.className='date-line';const date=document.createElement('input');date.type='date';date.setAttribute('aria-label',ui[lang].dateLabel);const today=new Date();const localISO=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');date.min=localISO;date.value=localISO;const btn=document.createElement('button');btn.type='button';btn.textContent=ui[lang].dateButton;btn.addEventListener('click',()=>{if(!date.value||date.value<localISO){say(ui[lang].dateError);return;}booking.date=date.value;row.remove();say(date.value,'user');chooseTime();});row.append(date,btn);body.append(row);scrollDown();}
   function chooseTime(){flow='time';const t=ui[lang];say(t.chooseTime);choices(t.timeChoices,t.timeChoices.map(v=>()=>finish(v)));}
-  function finish(time){booking.time=time;flow=null;const t=ui[lang];say(t.summary+'\n'+t.serviceLabel+': '+labelService(booking.service)+'\n'+t.doctorLabel+': '+booking.doctor+'\n'+t.dateLabel+': '+booking.date+'\n'+t.timeLabel+': '+booking.time+'\n\n'+t.notSent);choices([t.newRequest,t.moreHelp],[()=>beginBooking(),homeMenu]);}
+  function finish(time){booking.time=time;flow=null;trackDemoEvent('sample_request_completed');const t=ui[lang];say(t.summary+'\n'+t.serviceLabel+': '+labelService(booking.service)+'\n'+t.doctorLabel+': '+booking.doctor+'\n'+t.dateLabel+': '+booking.date+'\n'+t.timeLabel+': '+booking.time+'\n\n'+t.notSent);choices([t.newRequest,t.moreHelp],[()=>beginBooking(),homeMenu]);}
   function handleFreeText(q){const text=q.trim().toLowerCase();if(!text)return;const t=ui[lang];if(/(emergency|can't breathe|cannot breathe|chest pain|unconscious|severe bleeding|طوارئ|اختناق|ألم الصدر|نزيف شديد)/i.test(text)){flow=null;say(t.emergency);return;}if(/(pain|hurt|ache|infection|swelling|symptoms|وجع|ألم|التهاب|تورم|مرض)/i.test(text)){flow=null;say(t.medical);choices([t.choices[0],t.choices[3]],[beginBooking,showHuman]);return;}
     if(/(price|cost|fee|discount|offer|how much|سعر|أسعار|تكلفة|خصم|عرض)/i.test(text)){say(t.price);choices([t.choices[0],t.choices[3]],[beginBooking,showHuman]);return;}
     if(/(hours|open|close|location|address|where|map|وقت|دوام|ساعات|موقع|عنوان|وين|أين)/i.test(text)){showHours();return;}
@@ -238,6 +260,7 @@
     e.preventDefault();const q=input.value.trim();if(!q || aiBusy)return;
     input.value='';say(q,'user');
     if (privateDataDetected(q)) {say(lang==='ar'?dataWarningAr:dataWarningEn);return;}
+    trackDemoEvent('chat_message_sent', {chat_mode: aiReady ? 'ai' : 'guided'});
     // Continue guided appointment steps when explicitly chosen.
     if (flow) { handleFreeText(q); return; }
     // Always handle urgent symptoms locally, without waiting on an AI service.
@@ -309,11 +332,14 @@
   }
   $('enableChimeTop').addEventListener('click',enableAndTestSound);
   $('enableChimeChat').addEventListener('click',enableAndTestSound);
-  function setChatOpen(open,focusInput=true){
+  function setChatOpen(open,focusInput=true,source='manual'){
     if(!open) autoOpenDismissed=true;
     const wasOpen=widget.classList.contains('open');
     widget.classList.toggle('open',open);
-    if(open&&!wasOpen) playOpenChime();
+    if(open&&!wasOpen) {
+      playOpenChime();
+      trackDemoEvent('chat_opened', {opening_method: source});
+    }
     widget.setAttribute('aria-hidden',String(!open));
     launcher.setAttribute('aria-expanded',String(open));
     launcher.setAttribute('aria-label',open?'Close the Gewan chatbot demo':'Open the Gewan chatbot demo');
@@ -332,7 +358,7 @@
   // Offer the assistant after five seconds without interrupting the mobile keyboard.
   // Respect visitors who opened or dismissed the assistant before the delay expires.
   setTimeout(()=>{
-    if(!autoOpenDismissed && !widget.classList.contains('open')) setChatOpen(true, false);
+    if(!autoOpenDismissed && !widget.classList.contains('open')) setChatOpen(true, false, 'automatic');
   }, 5000);
 })();
 </script>
