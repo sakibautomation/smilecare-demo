@@ -128,6 +128,21 @@
   // Add the public GA4 Measurement ID (G-...) to activate free analytics.
   // No user message text, appointment details or identifying information is sent as an event.
   const GA4_MEASUREMENT_ID = 'G-TW42494X3M';
+  // Retain only approved campaign labels; never send other URL query values to GA4.
+  function safeCampaignPageLocation() {
+    const page = new URL(window.location.href);
+    const kept = new URL(page.origin + page.pathname);
+    const allowed = {
+      utm_source: ['gewan', 'avenues'],
+      utm_medium: ['email'],
+      utm_campaign: ['qatar_ai_demo_nov2026']
+    };
+    for (const [key, values] of Object.entries(allowed)) {
+      const value = page.searchParams.get(key);
+      if (value && values.includes(value)) kept.searchParams.set(key, value);
+    }
+    return kept.href;
+  }
   if (/^G-[A-Z0-9]+$/.test(GA4_MEASUREMENT_ID)) {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(){ window.dataLayer.push(arguments); };
@@ -135,7 +150,7 @@
     window.gtag('config', GA4_MEASUREMENT_ID, {
       allow_google_signals: false,
       allow_ad_personalization_signals: false,
-      page_location: location.origin + location.pathname
+      page_location: safeCampaignPageLocation()
     });
     const tag = document.createElement('script');
     tag.async = true;
