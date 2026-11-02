@@ -127,7 +127,7 @@
   const apiURL = '/api/chat';
   // Add the public GA4 Measurement ID (G-...) to activate free analytics.
   // No user message text, appointment details or identifying information is sent as an event.
-  const GA4_MEASUREMENT_ID = '';
+  const GA4_MEASUREMENT_ID = 'G-TW42494X3M';
   if (/^G-[A-Z0-9]+$/.test(GA4_MEASUREMENT_ID)) {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(){ window.dataLayer.push(arguments); };
