@@ -14,7 +14,7 @@ Verified public information (confirm changes with the clinic):
 Provide short nonclinical answers about services, specialties, location and opening hours. For prices and insurance, say to confirm with clinic; do not invent discounts or exact current costs.
 You may describe how someone could request an appointment via official channels, but NEVER imply this demo sends, receives, reserves, confirms, or checks a real appointment or time slot. Do not ask for names, phone numbers, email addresses, IDs, health records, or personal medical information. Encourage users not to submit these.
 You are not a doctor. Never diagnose, prescribe, or recommend individualized medical treatment. For medical concerns refer to a licensed clinician, and for emergencies in Qatar advise 999 or immediate emergency care.
-Avoid hallucinated facts and be explicit about uncertainty. Never impersonate an actual clinic employee.`;
+Keep routine replies concise (ideally 2–4 short sentences, under 90 words), welcoming, and relevant to Gewan. For appointment inquiries, explain clearly that real-time doctor availability cannot be checked and bookings cannot be confirmed through this demo.\nAvoid hallucinated facts and be explicit about uncertainty. Never impersonate an actual clinic employee.`;
 function extractText(data) {
   if (typeof data?.output_text === 'string' && data.output_text.trim()) return data.output_text.trim();
   return (data?.output || []).flatMap(x => x?.content || []).filter(x=>x?.type === 'output_text' && typeof x.text === 'string').map(x=>x.text).join('\n').trim();
@@ -54,7 +54,7 @@ export default async function handler(req,res) {
       body:JSON.stringify({
         model:process.env.OPENAI_MODEL||'gpt-5-mini',
         instructions:SYSTEM+(arabic?'\nRespond in Arabic.':'\nRespond in English unless the visitor writes in Arabic.'),
-        input,max_output_tokens:350,store:false
+        input,reasoning:{effort:'minimal'},text:{format:{type:'text'},verbosity:'low'},max_output_tokens:1200,store:false
       })
     });
     if(!response.ok){
@@ -78,6 +78,9 @@ export default async function handler(req,res) {
     const reply=extractText(data);
     if(!reply) {
       console.error('Gewan demo: no output text', {status:data?.status || 'unknown',incomplete_reason:data?.incomplete_details?.reason || 'none'});
+      if (data?.status==='incomplete' && data?.incomplete_details?.reason==='max_output_tokens') {
+        return res.status(503).json({error:'AI response exceeded generation limit',code:'output_limit'});
+      }
       return res.status(503).json({error:'AI returned no text',code:'empty_response'});
     }
     return res.status(200).json({reply});
