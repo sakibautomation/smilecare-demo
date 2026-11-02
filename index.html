@@ -62,10 +62,13 @@
       .concierge-widget .bot-avatar{height:32px;width:32px}.chat-close{height:27px;width:27px}
     }
     @media(prefers-reduced-motion:reduce){.concierge-widget{transition:none}}
+    .notice-sound{margin-left:10px;padding:5px 10px;border:1px solid #b9d7c9;border-radius:14px;background:#ebf7f1;color:#124c43;font-size:11px;font-weight:750;white-space:nowrap;cursor:pointer}
+    .chat-sound{width:31px;height:31px;flex:none;border:1px solid #ffffff63;border-radius:50%;background:#ffffff19;color:#fff;display:grid;place-items:center;font-size:14px;cursor:pointer}
+    .chat-sound:hover{background:#ffffff35}
   </style>
 </head>
 <body>
-  <div class="topnotice"><strong>INDEPENDENT CONCEPT DEMO</strong> — Not an official Gewan Medical Center website or live booking system. Do not enter names, contact details, IDs or personal medical information. AI-powered responses require a configured backend.</div>
+  <div class="topnotice"><strong>INDEPENDENT CONCEPT DEMO</strong> — Not an official Gewan Medical Center website or live booking system. Do not enter names, contact details, IDs or personal medical information. AI-powered responses require a configured backend. <button type="button" class="notice-sound" id="enableChimeTop" title="Click once to allow the chatbot notification sound">🔊 Enable sound</button></div>
   <header class="wrap nav">
     <a class="logo" href="#top" aria-label="Gewan AI concept demo home"><span class="logo-symbol">G</span><span class="logo-text"><strong>GEWAN</strong><small>MEDICAL CENTER · CONCEPT</small></span></a>
     <nav class="navlinks" aria-label="Page navigation"><a href="#services">Services</a><a href="#doctors">Doctors</a><a href="#how">How it works</a><a href="https://gewanmedicalcenter.com/index-en.html" target="_blank" rel="noopener noreferrer">Official clinic ↗</a><button class="nav-cta" type="button" id="openChatNav">Try the demo</button></nav>
@@ -103,7 +106,7 @@
 <!-- Persistent chat launcher: initially closed and never blocks page content -->
   <div class="concierge-widget" id="conciergeWidget" aria-hidden="true">
           <div class="assistant-card" role="dialog" aria-modal="false" aria-label="Gewan virtual concierge interactive demo">
-            <div class="chat-top"><div class="bot-avatar" aria-hidden="true">✳</div><div class="chat-title"><strong id="assistantTitle">Gewan Virtual Concierge</strong><small><span class="online"></span><span id="assistantSubtitle">Interactive concept · not live</span></small></div><div class="language" aria-label="Language selector"><button type="button" class="lang-btn active" id="langEN" aria-pressed="true">EN</button><button type="button" class="lang-btn" id="langAR" aria-pressed="false">عربي</button></div><button type="button" class="chat-close" id="closeChat" aria-label="Close chat" title="Close chat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+            <div class="chat-top"><div class="bot-avatar" aria-hidden="true">✳</div><div class="chat-title"><strong id="assistantTitle">Gewan Virtual Concierge</strong><small><span class="online"></span><span id="assistantSubtitle">Interactive concept · not live</span></small></div><div class="language" aria-label="Language selector"><button type="button" class="lang-btn active" id="langEN" aria-pressed="true">EN</button><button type="button" class="lang-btn" id="langAR" aria-pressed="false">عربي</button></div><button type="button" class="chat-sound" id="enableChimeChat" aria-label="Enable chat notification sound" title="Enable sound and play a test chime">♫</button><button type="button" class="chat-close" id="closeChat" aria-label="Close chat" title="Close chat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
             <div class="chat-body" id="chatBody" aria-live="polite" aria-relevant="additions" aria-label="Demo chat"></div>
             <form class="composer" id="chatForm" autocomplete="off"><input id="chatInput" type="text" maxlength="240" aria-label="Ask the patient assistant" placeholder="Ask about services or appointments..." required><button class="send" type="submit" aria-label="Send message"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M22 2 11 13"/></svg></button></form>
             <div class="chat-foot" id="chatFoot">Scripted demonstration · No booking is sent · No chat data is stored</div>
@@ -264,30 +267,48 @@
   // If a visitor interacts with the page first, the delayed chime can play.
   document.addEventListener('pointerdown',unlockChime,{once:true,passive:true});
   document.addEventListener('keydown',unlockChime,{once:true});
-  function playOpenChime(){
+  function playOpenChime(force=false){
     try{
       const AudioContextCtor=window.AudioContext||window.webkitAudioContext;
       if(!AudioContextCtor) return;
       const ctx=chimeContext||(chimeContext=new AudioContextCtor());
       const beep=()=>{
-        if(ctx.state!=='running'||!widget.classList.contains('open')) return;
+        if(ctx.state!=='running'||(!force&&!widget.classList.contains('open'))) return;
         const now=ctx.currentTime;
-        const oscillator=ctx.createOscillator();
-        const volume=ctx.createGain();
-        oscillator.type='sine';
-        oscillator.frequency.setValueAtTime(740,now);
-        volume.gain.setValueAtTime(0.0001,now);
-        volume.gain.exponentialRampToValueAtTime(0.035,now+0.015);
-        volume.gain.exponentialRampToValueAtTime(0.0001,now+0.18);
-        oscillator.connect(volume);
-        volume.connect(ctx.destination);
-        oscillator.start(now);
-        oscillator.stop(now+0.2);
+        for(const [frequency,offset] of [[784,0],[988,0.105]]){
+          const oscillator=ctx.createOscillator();
+          const volume=ctx.createGain();
+          oscillator.type='sine';
+          oscillator.frequency.setValueAtTime(frequency,now+offset);
+          volume.gain.setValueAtTime(0.0001,now+offset);
+          volume.gain.exponentialRampToValueAtTime(0.08,now+offset+0.018);
+          volume.gain.exponentialRampToValueAtTime(0.0001,now+offset+0.20);
+          oscillator.connect(volume);
+          volume.connect(ctx.destination);
+          oscillator.start(now+offset);
+          oscillator.stop(now+offset+0.22);
+        }
       };
       if(ctx.state==='running') beep();
       else ctx.resume().then(beep).catch(()=>{});
     }catch(_error){ /* Opening the assistant never depends on audio. */ }
   }
+  async function enableAndTestSound(){
+    try{
+      unlockChime();
+      if(!chimeContext || chimeContext.state!=='running') await chimeContext.resume();
+      if(chimeContext.state==='running'){
+        $('enableChimeTop').textContent='🔊 Sound enabled';
+        $('enableChimeChat').textContent='🔊';
+        $('enableChimeChat').setAttribute('aria-label','Test chat sound');
+        playOpenChime(true);
+      }
+    }catch(_error){
+      $('enableChimeTop').textContent='🔇 Sound unavailable';
+    }
+  }
+  $('enableChimeTop').addEventListener('click',enableAndTestSound);
+  $('enableChimeChat').addEventListener('click',enableAndTestSound);
   function setChatOpen(open,focusInput=true){
     if(!open) autoOpenDismissed=true;
     const wasOpen=widget.classList.contains('open');
