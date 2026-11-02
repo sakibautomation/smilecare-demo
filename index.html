@@ -267,6 +267,10 @@
   }
   resetChat('en');
   checkConnection();
+  // Show the interactive assistant immediately when the demo opens.
+  // Do not auto-focus the input: that would pop up the mobile keyboard.
+  // Visitors can still close it with the close button or Escape key.
+  setChatOpen(true, false);
 })();
 </script>
 </body>
