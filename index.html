@@ -250,7 +250,9 @@
   $('startBooking').addEventListener('click',()=>{setChatOpen(true);beginBooking();});
 
   const widget=$('conciergeWidget'),launcher=$('chatLauncher');
+  let autoOpenDismissed=false;
   function setChatOpen(open,focusInput=true){
+    if(!open) autoOpenDismissed=true;
     widget.classList.toggle('open',open);
     widget.setAttribute('aria-hidden',String(!open));
     launcher.setAttribute('aria-expanded',String(open));
@@ -267,10 +269,11 @@
   }
   resetChat('en');
   checkConnection();
-  // Show the interactive assistant immediately when the demo opens.
-  // Do not auto-focus the input: that would pop up the mobile keyboard.
-  // Visitors can still close it with the close button or Escape key.
-  setChatOpen(true, false);
+  // Offer the assistant after five seconds without interrupting the mobile keyboard.
+  // Respect visitors who opened or dismissed the assistant before the delay expires.
+  setTimeout(()=>{
+    if(!autoOpenDismissed && !widget.classList.contains('open')) setChatOpen(true, false);
+  }, 5000);
 })();
 </script>
 </body>
